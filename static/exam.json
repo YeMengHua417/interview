@@ -1,0 +1,24 @@
+{
+  "question":[
+    {
+      "title":"what would be the output to the following code",
+      "body":"(function()){\n var array = new Array('100');\n console.log(array);console.log(array.length);\n}());",
+      "answer":[
+        "undefined undefined",
+        "['100'] 1 ",
+        "[undefined*100] 100",
+        "ReferenceError: array is not defined"
+      ]
+    },
+    {
+      "title":"what would be the output to the following code?",
+      "body":"for (var i = 0; i < 5; i++) {\n setTimeout(function() {\n  console.log(i);\n  }, 1000);\n);\n",
+      "answer":[
+        "0",
+        "1 2 3 4 ",
+        "4 4 4 4",
+        "5"
+      ]
+    }
+  ]
+}
