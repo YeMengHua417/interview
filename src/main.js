@@ -6,11 +6,22 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-import VueResource from 'vue-resource'
+import {
+  post,
+  get,
+  patch,
+  put
+} from './utils/request'
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
-Vue.use(VueResource);
+
+/* ------------------------Vue Global Variable------------------------------ */
+
+Vue.prototype.$post = post;
+Vue.prototype.$get = get;
+Vue.prototype.$patch = patch;
+Vue.prototype.$put = put;
 
 /* eslint-disable no-new */
 new Vue({
