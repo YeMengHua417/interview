@@ -79,6 +79,7 @@ export default {
         if (valid) {
           this.dialogVisible = true;
         } else {
+          // 发消息后端要session，后续要把验证码加上，以及路由检测
           return;
         }
       });
