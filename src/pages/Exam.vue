@@ -59,8 +59,8 @@
         };
       },
       getQuestion:function(){
-        this.$http.get('static/exam.json').then(res => {
-          this.exam = res.body.question;
+        this.$get('static/exam.json').then(res => {
+          this.exam = res.question;
           this.question = this.exam[this.index];
           this.$refs.countDown.startCountdown();
         })

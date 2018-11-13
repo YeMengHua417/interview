@@ -3,10 +3,10 @@ import router from "../router/index";
 // import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
-process.env.NODE_ENV === "development" ? axios.defaults.baseURL = "/api" :
-  process.env.NODE_ENV === "test" ? axios.defaults.baseURL = "http://ims.dev.zjjc.com" :
-    process.env.NODE_ENV === "production" ? axios.defaults.baseURL = "http://ims.zhujianjc.com:81" :
-      axios.defaults.baseURL = ""
+process.env.NODE_ENV === "development" ? axios.defaults.baseURL = "" :
+  // process.env.NODE_ENV === "test" ? axios.defaults.baseURL = "http://ims.dev.zjjc.com" :
+  //   process.env.NODE_ENV === "production" ? axios.defaults.baseURL = "http://ims.zhujianjc.com:81" :
+  //     axios.defaults.baseURL = ""
 
 /**
  * 获取cookie

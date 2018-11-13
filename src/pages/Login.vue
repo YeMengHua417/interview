@@ -66,7 +66,7 @@ export default {
           trigger: ["blur", "change"]
         },{
           type: 'number',
-          max: 20,
+          maxLength:20,
           message: '',
           trigger: 'blur' }
           ]
