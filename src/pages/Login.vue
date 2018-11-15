@@ -1,8 +1,7 @@
 <template>
   <div class="loginPage">
-    <img src="../assets/image/ben-mullins-785450-unsplash.jpg" width="100%" height="100%"/>
+    <img src="https://prod-bentleycdn.azureedge.net/-/media/images/website-specific-graphics/hero/hero_ist_39752344_designteam_l.jpg?h=349&amp;la=zh-CN&amp;w=1800&amp;modified=20170710135652&amp;hash=740A15E0E1DC0AE6D1F4AF75FF89E5860E0B7BE6" alt="" width="1800" height="349" draggable="false">
     <div class="login">
-      <h1>sign up</h1>
       <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
         <el-form-item label="" prop="name">
           <el-input v-model="loginForm.name" placeholder="please input your Name"></el-input>
@@ -12,10 +11,14 @@
         </el-form-item>
         <el-form-item>
           <div>
-            <el-button type="primary" @click="login('loginForm')"> login</el-button>
+            <el-button type="primary" @click="login('loginForm')">start the exam</el-button>
           </div>
         </el-form-item>
       </el-form>
+    </div>
+    <div class="footer">
+      <div>email:april1984417@163.com</div>
+
     </div>
     <el-dialog
       title="Instructions"
@@ -40,6 +43,7 @@
 </template>
 
 <script>
+import MD5 from '../utils/md5'
 export default {
   name: 'login',
   data () {
@@ -87,7 +91,15 @@ export default {
     startTest () {
       this.dialogVisible = false;
       //向后端发消息
-      this.$router.push({ path: '/exam' });
+
+      let param = {
+        name:MD5(this.name),
+        telephone:MD5(this.telephone)
+      };
+
+      this.$post('/api/login').then(response=>{
+         this.$router.push({ path: '/exam' });
+      })
     }
   }
 }
@@ -105,23 +117,23 @@ export default {
     left:0;
     right: 0;
     bottom: 0;
-    background-image: url(../assets/image/ben-mullins-785450-unsplash.jpg);
-    background-size: cover;
-
   }
   .login{
+    background-color: #fff;
     position: absolute;
-    top:40%;
+    top: 40%;
     left: 50%;
+    -webkit-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
-
     text-align: left;
     border: 1px solid #888888;
     border-radius: 3px;
+    -webkit-box-shadow: 8px 8px 10px #888888;
     box-shadow: 8px 8px 10px #888888;
     width: 500px;
-    height: 320px;
+    height: 180px;
     padding: 10px;
+    padding-top: 30px;
     padding-right: 80px;
   }
   .login h1{
@@ -137,6 +149,18 @@ export default {
     padding: 25px;
     font-size: 16px;
     line-height: 20px;
+  }
+
+  .footer{
+    text-align: left;
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #e1e1e1;
+    color: #333;
+    padding: 25px 40px 20px 60px;
   }
 
  </style>
