@@ -21,14 +21,14 @@
 
     </div>
     <el-dialog
-      title="Instructions"
+      title="INSTRCTIONS"
       :visible.sync="dialogVisible"
       width="30%"
     >
       <ul>
         <li>1.This test is for evaluation of Javascript langage understanding and programming skills;</li>
         <li>2.you are suppose to complete the test independently;</li>
-        <li>3.you have 2 minutes for each question;</li>
+        <li>3.you have <span class="red">2</span> minutes for each question;</li>
         <li>4.please keep the window as the foreground window during the test;</li>
         <li>5.<span class="red">Do Not switch/hide/resize/ this window</span>,otherwise it may affect your final score;</li>
         <li>Thanks for your cooperation!</li>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import MD5 from '../utils/md5'
+import * as localStorage from '../utils/localStorage';
 export default {
   name: 'login',
   data () {
@@ -83,7 +83,6 @@ export default {
         if (valid) {
           this.dialogVisible = true;
         } else {
-          // 发消息后端要session，后续要把验证码加上，以及路由检测
           return;
         }
       });
@@ -93,11 +92,13 @@ export default {
       //向后端发消息
 
       let param = {
-        name:MD5(this.name),
-        telephone:MD5(this.telephone)
+        name:this.name,
+        telephone:this.telephone
       };
 
       this.$post('/api/login').then(response=>{
+         // 假装setCookie，做个防护
+         localStorage.setItem('sessionId', '123');
          this.$router.push({ path: '/exam' });
       })
     }
@@ -161,6 +162,10 @@ export default {
     background-color: #e1e1e1;
     color: #333;
     padding: 25px 40px 20px 60px;
+  }
+
+  .red{
+    color: red;
   }
 
  </style>

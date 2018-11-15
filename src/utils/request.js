@@ -3,30 +3,6 @@ import router from "../router/index";
 // import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
-// process.env.NODE_ENV === "development" ? axios.defaults.baseURL = "" :
-  // process.env.NODE_ENV === "test" ? axios.defaults.baseURL = "http://ims.dev.zjjc.com" :
-  //   process.env.NODE_ENV === "production" ? axios.defaults.baseURL = "http://ims.zhujianjc.com:81" :
-  //     axios.defaults.baseURL = ""
-
-/**
- * 获取cookie
- */
-function getCookie() {
-  let value_start = "",
-    value_end = "",
-    value = "";
-
-  if (document.cookie.length > 0 && (document.cookie.indexOf(c_name + "=")) != -1) {
-    value_start = document.cookie.indexOf(c_name + "=");
-    value_start = value_start + c_name.length + 1
-    value_end = document.cookie.indexOf(";", value_start)
-    if (value_end == -1) {
-      value_end = document.cookie.length
-    }
-    value = document.cookie.substring(value_start, value_end);
-  }
-  return value;
-}
 // http request 拦截器
 
 axios.interceptors.request.use(
@@ -53,9 +29,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
 
-    if ( response.data.code === -401) {
+    if ( response.data.code === 401) {
       router.push({
-        path: '/dingreview/login',
+        path: '/login',
         query: {
           redirect: router.currentRoute.fullPath
         } // 从哪个页面跳转

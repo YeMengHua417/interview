@@ -22,7 +22,7 @@
 
 <script>
   import countDown from '../components/countDown'
-
+  import * as localStorage from '../utils/localStorage';
   export default {
     name: "Exam",
     components: {countDown},
@@ -73,6 +73,8 @@
         if(this.index === (this.exam.length-1)){
           this.$refs.countDown.stopCountDown();
           // 向后台发消息 报告成绩
+          // 清除
+          localStorage.removeItem('sessionId');
           this.$router.replace({ path: '/thanks' });
         }
         else{
