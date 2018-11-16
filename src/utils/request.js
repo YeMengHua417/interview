@@ -10,14 +10,8 @@ axios.interceptors.request.use(
     config.data = JSON.stringify(config.data);
     config.headers = {
       'Content-Type': 'application/json'
-      // "x-auth-token": sessionStorage.getItem("x-auth-token"),
-    }
+    };
 
-    // if(token){
-    //   config.params = {'token':token}
-    // }
-
-    //config.params = {'token':"93bf83cd-faab-40ef-8830-b58a2c6cd59a"}
     return config;
   },
   error => {
@@ -28,7 +22,6 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
   response => {
-
     if ( response.data.code === 401) {
       router.push({
         path: '/login',
