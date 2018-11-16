@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import MD5 from  '../utils/md5'
 import * as localStorage from '../utils/localStorage';
 export default {
   name: 'login',
@@ -92,11 +93,11 @@ export default {
       //向后端发消息
 
       let param = {
-        name:this.name,
-        telephone:this.telephone
+        name:MD5(this.loginForm.name.toString()),
+        telephone:MD5(this.loginForm.telephone.toString())
       };
 
-      this.$post('/api/login').then(response=>{
+      this.$post('/api/login',param).then(response=>{
          // 假装setCookie，做个防护
          localStorage.setItem('sessionId', '123');
          this.$router.push({ path: '/exam' });

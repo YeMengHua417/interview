@@ -2,7 +2,8 @@ import axios from 'axios';
 import router from "../router/index";
 // import { Message } from 'element-ui';
 
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 50000;
+axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 // http request 拦截器
 
 axios.interceptors.request.use(
@@ -66,8 +67,9 @@ export function get(url, params = {}) {
  * @returns {Promise}
  */
 
-export function post(url, data = {}) {
+export function post(url, data={}) {
   return new Promise((resolve, reject) => {
+    debugger;
     axios.post(url, data)
       .then(response => {
         resolve(response.data);
