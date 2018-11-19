@@ -52,6 +52,8 @@
 <script>
 import MD5 from  '../utils/md5'
 import * as localStorage from '../utils/localStorage';
+// import JSEncrypt from '../utils/jsencrypt.min'
+import { JSEncrypt } from 'jsencrypt'
 export default {
   name: 'login',
   data () {
@@ -113,23 +115,30 @@ export default {
         }
       });
     },
+    getPublicKey(){
+        return this.$get('/api/key');
+    },
     startTest () {
       this.dialogVisible = false;
       //向后端发消息
 
-      let param = {
-        name:MD5(this.loginForm.name.toString()),
-        telephone:MD5(this.loginForm.telephone.toString())
-      };
+      this.$get('/api/key').then(response=>{
+        let key = response.data.publicKey;
+        let encrypt = new JSEncrypt()
+        encrypt.setPublicKey(key);
 
-      this.$post('/api/login',param).then(response=>{
-         // 假装setCookie，做个防护
-         this.$get('/api/home').then(res=>{
+        let param = {
+          name:encrypt.encrypt(this.loginForm.name.toString()),
+          telephone:encrypt.encrypt(this.loginForm.telephone.toString()),
+          vertifyCode:this.loginForm.identityCode
+        };
 
-         });
+        this.$post('/api/login',param).then(response=>{
+           // 获取到token，存下作为路由防护
 
-         localStorage.setItem('sessionId', '123');
-         this.$router.push({ path: '/exam' });
+           localStorage.setItem('sessionId', response.data.token);
+           this.$router.push({ path: '/exam' });
+        })
       })
     }
   }
@@ -203,6 +212,7 @@ export default {
   }
 
   .vertifyCode img{
+    height: 40px;
     cursor: pointer;
   }
  </style>
