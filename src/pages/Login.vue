@@ -9,6 +9,13 @@
         <el-form-item label="" prop="telephone">
           <el-input  placeholder="please input your telephone" v-model.number="loginForm.telephone" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="" prop="identityCode">
+          <div class="vertifyCode">
+            <el-input  v-model.number="loginForm.identityCode" autocomplete="off"></el-input>
+            <img @load="verifyLoadState=true"  @click="toggleVerify()" :src="img_src" alt="">
+          </div>
+
+        </el-form-item>
         <el-form-item>
           <div>
             <el-button type="primary" @click="login('loginForm')">start the exam</el-button>
@@ -51,8 +58,11 @@ export default {
     return {
       loginForm: {
         name: '',
-        telephone: ''
+        telephone: '',
+        identityCode:'',
       },
+      img_src:'',
+      verifyLoadState:true,
       dialogVisible: false,
       rules: {
         name: [{
@@ -75,10 +85,25 @@ export default {
           message: '',
           trigger: 'blur' }
           ]
-      }
+      },
+      identityCode:[{
+        required: true,
+        message: "",
+      }]
     }
   },
+  created(){
+    this.toggleVerify();
+  },
   methods: {
+    toggleVerify(){
+
+      if(!this.verifyLoadState) return;
+      // 防止下一次重复点击
+      this.verifyLoadState =  false;
+      const base = '/api/getIdentifyCode'
+      this.img_src = base + '?' + (new Date()).getTime();
+    },
     login(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -99,6 +124,10 @@ export default {
 
       this.$post('/api/login',param).then(response=>{
          // 假装setCookie，做个防护
+         this.$get('/api/home').then(res=>{
+
+         });
+
          localStorage.setItem('sessionId', '123');
          this.$router.push({ path: '/exam' });
       })
@@ -133,7 +162,7 @@ export default {
     -webkit-box-shadow: 8px 8px 10px #888888;
     box-shadow: 8px 8px 10px #888888;
     width: 500px;
-    height: 180px;
+    height: 250px;
     padding: 10px;
     padding-top: 30px;
     padding-right: 80px;
@@ -169,4 +198,11 @@ export default {
     color: red;
   }
 
+  .vertifyCode{
+    display: flex;
+  }
+
+  .vertifyCode img{
+    cursor: pointer;
+  }
  </style>

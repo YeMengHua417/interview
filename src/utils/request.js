@@ -69,7 +69,6 @@ export function get(url, params = {}) {
 
 export function post(url, data={}) {
   return new Promise((resolve, reject) => {
-    debugger;
     axios.post(url, data)
       .then(response => {
         resolve(response.data);
