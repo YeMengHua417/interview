@@ -4,7 +4,7 @@
     <div class="login">
       <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px">
         <el-form-item label="" prop="name">
-          <el-input v-model="loginForm.name" placeholder="please input your Name"></el-input>
+          <el-input v-model.trim="loginForm.name" placeholder="please input your Name"></el-input>
         </el-form-item>
         <el-form-item label="" prop="telephone">
           <el-input  placeholder="please input your telephone" v-model.number="loginForm.telephone" autocomplete="off"></el-input>
@@ -115,9 +115,6 @@ export default {
         }
       });
     },
-    getPublicKey(){
-        return this.$get('/api/key');
-    },
     startTest () {
       this.dialogVisible = false;
       //向后端发消息
@@ -136,8 +133,17 @@ export default {
         this.$post('/api/login',param).then(response=>{
            // 获取到token，存下作为路由防护
 
-           localStorage.setItem('sessionId', response.data.token);
-           this.$router.push({ path: '/exam' });
+           if(response.code != 200){
+             this.toggleVerify();
+             this.$message({
+               message: response.msg,
+               type: 'warning'
+             });
+
+           }else{
+             localStorage.setItem('sessionId', response.data.token);
+             this.$router.push({ path: '/exam' });
+           }
         })
       })
     }
