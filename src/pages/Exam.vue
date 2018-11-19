@@ -59,9 +59,10 @@
         };
       },
       getQuestion:function(){
-        this.$get('static/exam.json').then(res => {
-          this.exam = res.question;
-          this.question = this.exam[this.index];
+        var that = this;
+        this.$get('/api/questions').then(res => {
+          that.exam = res.data.exam.question;
+          that.question = this.exam[this.index];
           this.$refs.countDown.startCountdown();
         })
       },

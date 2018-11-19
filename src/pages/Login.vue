@@ -164,6 +164,7 @@ export default {
     right: 0;
     bottom: 0;
   }
+
   .login{
     background-color: #fff;
     position: absolute;
