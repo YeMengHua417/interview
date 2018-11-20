@@ -86,12 +86,13 @@ export default {
           maxLength:20,
           message: '',
           trigger: 'blur' }
-          ]
+          ],
+        identityCode:[{
+          required: true,
+          message: "",
+        }]
       },
-      identityCode:[{
-        required: true,
-        message: "",
-      }]
+
     }
   },
   created(){
@@ -115,37 +116,31 @@ export default {
         }
       });
     },
-    startTest () {
+    async startTest(){
       this.dialogVisible = false;
-      //向后端发消息
+      let key = await this.$get('/api/key');
 
-      this.$get('/api/key').then(response=>{
-        let key = response.data.publicKey;
-        let encrypt = new JSEncrypt()
-        encrypt.setPublicKey(key);
+      let encrypt = new JSEncrypt();
+      encrypt.setPublicKey(key.data.publicKey);
 
-        let param = {
-          name:encrypt.encrypt(this.loginForm.name.toString()),
-          telephone:encrypt.encrypt(this.loginForm.telephone.toString()),
-          vertifyCode:this.loginForm.identityCode
-        };
+      let param = {
+        name:encrypt.encrypt(this.loginForm.name.toString()),
+        telephone:encrypt.encrypt(this.loginForm.telephone.toString()),
+        vertifyCode:this.loginForm.identityCode
+      };
 
-        this.$post('/api/login',param).then(response=>{
-           // 获取到token，存下作为路由防护
+      var res =  await this.$post('/api/login',param);
+      if(res.code != 200){
+        this.toggleVerify();
+        this.$message({
+          message: response.msg,
+          type: 'warning'
+        });
 
-           if(response.code != 200){
-             this.toggleVerify();
-             this.$message({
-               message: response.msg,
-               type: 'warning'
-             });
-
-           }else{
-             localStorage.setItem('sessionId', response.data.token);
-             this.$router.push({ path: '/exam' });
-           }
-        })
-      })
+      }else{
+        localStorage.setItem('sessionId', res.data.token);
+        this.$router.push({ path: '/exam' });
+      }
     }
   }
 }

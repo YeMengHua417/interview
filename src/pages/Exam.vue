@@ -73,7 +73,11 @@
         // 判断是否有下一题，然后最后一道题，结束定时
         if(this.index === (this.exam.length-1)){
           this.$refs.countDown.stopCountDown();
+          this.examResult.push(this.radio);
           // 向后台发消息 报告成绩
+          this.$post('/api/result',{'result':this.examResult}).then(response=>{
+
+          }),
           // 清除
           localStorage.removeItem('sessionId');
           this.$router.replace({ path: '/thanks' });
